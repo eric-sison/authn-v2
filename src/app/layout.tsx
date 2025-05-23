@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+import { type Metadata } from "next";
+import { type PropsWithChildren } from "react";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { PropsWithChildren } from "react";
 
 const inter = Inter({
   variable: "--font-inter",
