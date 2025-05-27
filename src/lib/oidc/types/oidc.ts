@@ -73,3 +73,33 @@ export type DiscoveryDocument = {
   grant_types_supported?: OIDCGrantTypes[];
   code_challenge_methods_supported?: OIDCCodeChallengeMethods[];
 };
+
+export type AuthorizationRequest = {
+  clientId: string;
+  redirectUri: string;
+  scope: string;
+  responseType: OIDCResponseTypes;
+  state?: string;
+  nonce?: string;
+  codeChallenge?: string;
+  codeChallengeMethod?: OIDCCodeChallengeMethods;
+};
+
+export type AuthorizationResponse = {
+  // For Authorization Code flow
+  code?: string;
+
+  // For Implicit flows
+  access_token?: string;
+  token_type?: string;
+  id_token?: string;
+  expires_in?: number;
+
+  // Always included
+  state?: string; // Echo back the client's state
+
+  // Error cases
+  error?: string;
+  error_description?: string;
+  error_uri?: string;
+};

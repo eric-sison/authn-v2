@@ -1,6 +1,6 @@
-import type { DiscoveryDocument, OIDCProvider } from "../types/oidc";
+import type { DiscoveryDocument, OIDCProvider, OIDCResponseTypes, OIDCScopes } from "../types/oidc";
 
-export class OIDCConfig {
+export class OIDCConfigService {
   constructor(private readonly config: OIDCProvider) {
     this.validateConfiguration();
   }
@@ -88,7 +88,7 @@ export class OIDCConfig {
     }
   }
 
-  private isValidUrl(str: string) {
+  public isValidUrl(str: string) {
     try {
       const url = new URL(str);
       return url.protocol === "http:" || url.protocol === "https:";

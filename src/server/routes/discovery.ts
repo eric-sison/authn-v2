@@ -1,4 +1,4 @@
-import { OIDCConfig } from "@/utils/services/oidc-config";
+import { OIDCConfig } from "@/lib/oidc/services/oidc-config-service";
 import { Hono } from "hono";
 
 // this route is for testing only
