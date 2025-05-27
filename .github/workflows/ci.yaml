@@ -7,15 +7,16 @@ on:
     branches: [main]
 
 jobs:
-  cache-and-install:
+  test:
     runs-on: ubuntu-latest
+    name: Test
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: 10
           run_install: false
@@ -32,30 +33,76 @@ jobs:
       - name: Run tests
         run: pnpm test
 
-      - name: Cache node_modules
+      # Optional: Upload test results for better visibility
+      - name: Upload test results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: node-modules
-          path: node_modules
+          name: test-results
+          path: |
+            coverage/
+            test-results.xml
+          retention-days: 7
 
-  build:
-    needs: cache-and-install
+  lint:
     runs-on: ubuntu-latest
+    name: Lint
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: 10
           run_install: false
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "pnpm"
 
-      - run: pnpm install # This will be fast, thanks to pnpm cache
+      - name: Install dependencies
+        run: pnpm install
 
-      - run: pnpm lint
-      - run: pnpm build
+      - name: Run linting
+        run: pnpm lint
+
+  build:
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    name: Build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            dist/
+            .next/
+            build/
+          retention-days: 7
