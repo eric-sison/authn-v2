@@ -1,4 +1,4 @@
-import type { DiscoveryDocument, OIDCProvider, OIDCResponseTypes, OIDCScopes } from "../types/oidc";
+import type { DiscoveryDocument, OIDCProvider } from "../types/oidc";
 
 export class OIDCConfigService {
   constructor(private readonly config: OIDCProvider) {

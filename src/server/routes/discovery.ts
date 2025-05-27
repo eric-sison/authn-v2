@@ -1,9 +1,9 @@
-import { OIDCConfig } from "@/lib/oidc/services/oidc-config-service";
+import { OIDCConfigService } from "@/lib/oidc/services/oidc-config-service";
 import { Hono } from "hono";
 
 // this route is for testing only
 export const discoveryHandler = new Hono().get("/.well-known/openid-configuration", (c) => {
-  const oidcProvider = new OIDCConfig({
+  const oidcProvider = new OIDCConfigService({
     issuer: "https://auth.example.com",
     authorizationEndpoint: "https://auth.example.com/authorize",
     tokenEndpoint: "https://auth.example.com/token",
